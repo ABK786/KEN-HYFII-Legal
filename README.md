@@ -85,4 +85,4 @@ No license is granted for commercial implementation or derivative systems.
 ## Declaration
 
 This repository is intentionally published to ensure the disclosed architecture remains publicly documented and cannot be patented exclusively by third parties.
-
+https://zenodo.org/records/18644394
