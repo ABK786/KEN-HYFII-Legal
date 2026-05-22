@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KAI Public Safe Interface Sample</title>
+<style>
+  :root { --bg:#000; --text:#fff; --accent:#1e90ff; --muted:#9ca3af; --card:#0d1117; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:Arial, sans-serif; }
+  .wrap { max-width:960px; margin:0 auto; padding:32px 20px; }
+  .card { border:1px solid var(--accent); border-radius:16px; background:var(--card); padding:24px; box-shadow:0 0 24px rgba(30,144,255,.18); }
+  h1 { margin:0 0 8px; font-size:36px; }
+  p { color:var(--muted); line-height:1.6; }
+  textarea { width:100%; min-height:120px; margin:18px 0; padding:14px; border-radius:12px; border:1px solid var(--accent); background:#020617; color:#fff; }
+  button { background:var(--accent); color:#fff; border:0; padding:12px 18px; border-radius:12px; font-weight:700; cursor:pointer; }
+  pre { white-space:pre-wrap; background:#020617; border:1px solid #1f2937; border-radius:12px; padding:16px; overflow:auto; }
+  .badge { display:inline-block; border:1px solid var(--accent); color:var(--accent); padding:6px 10px; border-radius:999px; font-size:12px; margin-bottom:14px; }
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <span class="badge">KAI public safe sample</span>
+      <h1>KAI Decision Routing Demo</h1>
+      <p>This standalone sample demonstrates public safe intent classification, risk screening, role routing, and decision trace preparation.</p>
+      <textarea id="query" placeholder="Enter a sample request for KAI..."></textarea>
+      <button onclick="runKAI()">Run KAI Sample</button>
+      <h2>Sample Output</h2>
+      <pre id="output">Awaiting input.</pre>
+    </section>
+  </main>
+<script>
+const roles = {
+  general: "KAI-R01",
+  audit: "KAI-R06",
+  safety: "KAI-R07",
+  strategy: "KAI-R09",
+  software: "KAI-R10"
+};
+function classify(text) {
+  const value = String(text || "").toLowerCase();
+  if (value.includes("code") || value.includes("debug")) return ["software", roles.software];
+  if (value.includes("audit") || value.includes("verify")) return ["audit", roles.audit];
+  if (value.includes("strategy") || value.includes("plan")) return ["strategy", roles.strategy];
+  return ["general", roles.general];
+}
+function runKAI() {
+  const query = document.getElementById("query").value;
+  const [intent, role] = classify(query);
+  const flags = ["guarantee", "bypass", "secret"].filter(word => query.toLowerCase().includes(word));
+  const trace = {
+    query_id: "KAI-TR-SAMPLE",
+    timestamp: new Date().toISOString(),
+    surface_intent: intent,
+    primary_role: role,
+    supporting_roles: flags.length ? [roles.safety, roles.audit] : [],
+    confidence_level: "medium",
+    risk_level: flags.length ? "high" : "low",
+    compliance_flags: flags,
+    human_review_required: flags.length > 0,
+    kai_signal_status: flags.length ? "human_review_required" : "ready"
+  };
+  document.getElementById("output").textContent = JSON.stringify(trace, null, 2);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+{
+  "schema_name": "KAI_PUBLIC_DECISION_TRACE_SCHEMA",
+  "version": "public-safe-v1.0",
+  "status": "public_safe_sample",
+  "description": "Public safe sample of the KAI decision trace record used to support auditability, role discipline, risk classification, and human review routing.",
+  "record_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "query_id",
+      "timestamp",
+      "session_id",
+      "user_intent",
+      "surface_intent",
+      "underlying_intent",
+      "primary_role",
+      "supporting_roles",
+      "skills_invoked",
+      "sources_used",
+      "confidence_level",
+      "risk_level",
+      "compliance_flags",
+      "hitl_status",
+      "final_response_classification",
+      "failure_mode",
+      "human_review_required",
+      "kai_signal_status"
+    ],
+    "properties": {
+      "query_id": {"type": "string", "description": "Unique KAI trace identifier."},
+      "timestamp": {"type": "string", "description": "UTC timestamp in ISO format."},
+      "session_id": {"type": "string", "description": "Session reference. No personal identity required."},
+      "user_intent": {"type": "string", "description": "Interpreted user objective."},
+      "surface_intent": {"type": "string", "description": "Visible request category."},
+      "underlying_intent": {"type": "string", "description": "Deeper operational or risk intent when detected."},
+      "primary_role": {"type": "string", "description": "Main KAI role assigned to the response."},
+      "supporting_roles": {"type": "array", "items": {"type": "string"}},
+      "skills_invoked": {"type": "array", "items": {"type": "string"}},
+      "sources_used": {"type": "array", "items": {"type": "string"}},
+      "confidence_level": {"type": "string", "enum": ["low", "medium", "high"]},
+      "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+      "compliance_flags": {"type": "array", "items": {"type": "string"}},
+      "hitl_status": {"type": "string", "enum": ["not_required", "recommended", "required", "triggered"]},
+      "final_response_classification": {"type": "string"},
+      "failure_mode": {"type": "string"},
+      "human_review_required": {"type": "boolean"},
+      "kai_signal_status": {"type": "string"}
+    }
+  }
+}
